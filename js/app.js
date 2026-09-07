@@ -246,8 +246,9 @@ const App = {
             <div class="settings-form-row mt-2">
               <div class="form-group flex-1">
                 <label>Tipo / Categoría de Producto:</label>
-                <select id="new-prod-group" class="form-control" onchange="App.handleNewGroupChange(this.value)">
-                  <option value="${PRODUCT_GROUPS.CISTERNA}">🔵 Cisterna / Tambo (100% Puro Polietileno)</option>
+                <select id="new-prod-group" class="form-control">
+                  <option value="cisterna_bicapa">🔵 Cisterna Bicapa (2 Cargas de 50% c/u - Puro PE)</option>
+                  <option value="cisterna_4capas">🔵 Cisterna 4 Capas (4 Cargas de 25% c/u - Puro PE)</option>
                   <option value="${PRODUCT_GROUPS.TINACO_BICAPA}">🟢 Tinaco Bicapa (50% PE Arena / 50% Espumado)</option>
                   <option value="${PRODUCT_GROUPS.TINACO_TRICAPA}">🟠 Tinaco Tricapa (1/3 Arena + 1/3 Negro UV + 1/3 Espumado)</option>
                 </select>
@@ -357,16 +358,31 @@ const App = {
       return;
     }
 
-    let categoryLabel = 'Cisterna';
+    let categoryLabel = 'Cisterna Bicapa';
     let layers = [];
+    let finalGroup = PRODUCT_GROUPS.CISTERNA;
 
-    if (group === PRODUCT_GROUPS.CISTERNA) {
-      categoryLabel = 'Cisterna';
+    if (group === 'cisterna_bicapa' || group === PRODUCT_GROUPS.CISTERNA) {
+      categoryLabel = 'Cisterna Bicapa';
+      finalGroup = PRODUCT_GROUPS.CISTERNA;
+      const half = parseFloat((totalWeightKg / 2).toFixed(2));
       layers = [
-        { layerName: 'Cuerpo Completo', materialId: 'pe_cisterna', materialName: 'Polietileno Cisterna', weightKg: totalWeightKg, percentage: 100 }
+        { layerName: 'Capa 1 (1ra Carga)', materialId: 'pe_cisterna', materialName: 'Polietileno Cisterna', weightKg: half, percentage: 50 },
+        { layerName: 'Capa 2 (2da Carga)', materialId: 'pe_cisterna', materialName: 'Polietileno Cisterna', weightKg: half, percentage: 50 }
+      ];
+    } else if (group === 'cisterna_4capas') {
+      categoryLabel = 'Cisterna 4 Capas';
+      finalGroup = PRODUCT_GROUPS.CISTERNA;
+      const quarter = parseFloat((totalWeightKg / 4).toFixed(2));
+      layers = [
+        { layerName: 'Capa 1 (1ra Carga)', materialId: 'pe_cisterna', materialName: 'Polietileno Cisterna', weightKg: quarter, percentage: 25 },
+        { layerName: 'Capa 2 (2da Carga)', materialId: 'pe_cisterna', materialName: 'Polietileno Cisterna', weightKg: quarter, percentage: 25 },
+        { layerName: 'Capa 3 (3ra Carga)', materialId: 'pe_cisterna', materialName: 'Polietileno Cisterna', weightKg: quarter, percentage: 25 },
+        { layerName: 'Capa 4 (4ta Carga)', materialId: 'pe_cisterna', materialName: 'Polietileno Cisterna', weightKg: quarter, percentage: 25 }
       ];
     } else if (group === PRODUCT_GROUPS.TINACO_BICAPA) {
       categoryLabel = 'Tinaco Bicapa';
+      finalGroup = PRODUCT_GROUPS.TINACO_BICAPA;
       const half = parseFloat((totalWeightKg / 2).toFixed(2));
       layers = [
         { layerName: 'Capa Exterior', materialId: 'pe_arena', materialName: 'Polietileno Arena', weightKg: half, percentage: 50 },
@@ -374,6 +390,7 @@ const App = {
       ];
     } else if (group === PRODUCT_GROUPS.TINACO_TRICAPA) {
       categoryLabel = 'Tinaco Tricapa';
+      finalGroup = PRODUCT_GROUPS.TINACO_TRICAPA;
       const third = parseFloat((totalWeightKg / 3).toFixed(2));
       layers = [
         { layerName: 'Capa 1 (Exterior)', materialId: 'pe_arena', materialName: 'Polietileno Arena', weightKg: third, percentage: 33.33 },
@@ -386,11 +403,11 @@ const App = {
       id: 'custom-' + Date.now(),
       name,
       capacity,
-      group,
+      group: finalGroup,
       categoryLabel,
       totalWeightKg,
       layers,
-      image: group === PRODUCT_GROUPS.CISTERNA ? 'assets/img/modelos/cisterna_generic.svg' : 'assets/img/modelos/tinaco_tricapa_generic.svg',
+      image: finalGroup === PRODUCT_GROUPS.CISTERNA ? 'assets/img/modelos/cisterna_generic.svg' : 'assets/img/modelos/tinaco_tricapa_generic.svg',
       isPending: false,
       notes
     };
@@ -419,11 +436,27 @@ const App = {
     p.totalWeightKg = totalWeightKg;
     p.isPending = false;
 
-    // Recalcular capas según la fórmula del grupo
+    // Recalcular capas según la fórmula existente del producto
     if (p.group === PRODUCT_GROUPS.CISTERNA) {
-      p.layers = [
-        { layerName: 'Cuerpo Completo', materialId: 'pe_cisterna', materialName: 'Polietileno Cisterna', weightKg: totalWeightKg, percentage: 100 }
-      ];
+      if (p.layers.length === 4) {
+        const quarter = parseFloat((totalWeightKg / 4).toFixed(2));
+        p.layers = [
+          { layerName: 'Capa 1 (1ra Carga)', materialId: 'pe_cisterna', materialName: 'Polietileno Cisterna', weightKg: quarter, percentage: 25 },
+          { layerName: 'Capa 2 (2da Carga)', materialId: 'pe_cisterna', materialName: 'Polietileno Cisterna', weightKg: quarter, percentage: 25 },
+          { layerName: 'Capa 3 (3ra Carga)', materialId: 'pe_cisterna', materialName: 'Polietileno Cisterna', weightKg: quarter, percentage: 25 },
+          { layerName: 'Capa 4 (4ta Carga)', materialId: 'pe_cisterna', materialName: 'Polietileno Cisterna', weightKg: quarter, percentage: 25 }
+        ];
+      } else if (p.layers.length === 2) {
+        const half = parseFloat((totalWeightKg / 2).toFixed(2));
+        p.layers = [
+          { layerName: 'Capa 1 (1ra Carga)', materialId: 'pe_cisterna', materialName: 'Polietileno Cisterna', weightKg: half, percentage: 50 },
+          { layerName: 'Capa 2 (2da Carga)', materialId: 'pe_cisterna', materialName: 'Polietileno Cisterna', weightKg: half, percentage: 50 }
+        ];
+      } else {
+        p.layers = [
+          { layerName: 'Cuerpo Monomaterial', materialId: 'pe_cisterna', materialName: 'Polietileno Estándar', weightKg: totalWeightKg, percentage: 100 }
+        ];
+      }
     } else if (p.group === PRODUCT_GROUPS.TINACO_BICAPA) {
       const half = parseFloat((totalWeightKg / 2).toFixed(2));
       p.layers = [

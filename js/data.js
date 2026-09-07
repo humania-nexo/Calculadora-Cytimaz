@@ -226,83 +226,90 @@ const INITIAL_PRODUCTS = [
     notes: '⚠️ Cantidad pendiente por confirmar en planta (estimado 10 kg / 10 kg / 10 kg).'
   },
 
-  // --- CISTERNAS Y TAMBOS (100% Polietileno Puro) ---
+  // --- CISTERNAS Y TAMBOS (Puro Polietileno en múltiples cargas/capas) ---
   {
     id: 'cisterna-1100-trad',
-    name: 'Cisterna 1100 L Tradicional',
+    name: 'Cisterna 1100 L Tradicional (Bicapa)',
     capacity: 1100,
     group: PRODUCT_GROUPS.CISTERNA,
-    categoryLabel: 'Cisterna',
+    categoryLabel: 'Cisterna Bicapa',
     totalWeightKg: 18,
     layers: [
-      { layerName: 'Cuerpo Completo', materialId: 'pe_cisterna', materialName: 'Polietileno Cisterna', weightKg: 18, percentage: 100 }
+      { layerName: 'Capa 1 (1ra Carga)', materialId: 'pe_cisterna', materialName: 'Polietileno Cisterna', weightKg: 9, percentage: 50 },
+      { layerName: 'Capa 2 (2da Carga)', materialId: 'pe_cisterna', materialName: 'Polietileno Cisterna', weightKg: 9, percentage: 50 }
     ],
     image: 'assets/img/modelos/cisterna_generic.svg',
     isPending: false,
-    notes: 'Cisterna 1100L en puro polietileno (18 kg).'
+    notes: 'Cisterna 1100L en 2 capas de 9 kg de polietileno cada una (18 kg total).'
   },
   {
     id: 'cisterna-1100-bala',
-    name: 'Cisterna 1100 L Bala / Vertical',
+    name: 'Cisterna 1100 L Bala / Vertical (Bicapa)',
     capacity: 1100,
     group: PRODUCT_GROUPS.CISTERNA,
-    categoryLabel: 'Cisterna',
+    categoryLabel: 'Cisterna Bicapa',
     totalWeightKg: 18,
     layers: [
-      { layerName: 'Cuerpo Completo', materialId: 'pe_cisterna', materialName: 'Polietileno Cisterna', weightKg: 18, percentage: 100 }
+      { layerName: 'Capa 1 (1ra Carga)', materialId: 'pe_cisterna', materialName: 'Polietileno Cisterna', weightKg: 9, percentage: 50 },
+      { layerName: 'Capa 2 (2da Carga)', materialId: 'pe_cisterna', materialName: 'Polietileno Cisterna', weightKg: 9, percentage: 50 }
     ],
     image: 'assets/img/modelos/cisterna_generic.svg',
     isPending: false,
-    notes: 'Cisterna 1100L tipo bala vertical en puro polietileno (18 kg).'
+    notes: 'Cisterna 1100L bala vertical en 2 capas de 9 kg (18 kg total).'
   },
   {
     id: 'cisterna-1300',
-    name: 'Cisterna 1300 L',
+    name: 'Cisterna 1300 L (Bicapa)',
     capacity: 1300,
     group: PRODUCT_GROUPS.CISTERNA,
-    categoryLabel: 'Cisterna',
+    categoryLabel: 'Cisterna Bicapa',
     totalWeightKg: 24,
     layers: [
-      { layerName: 'Cuerpo Completo', materialId: 'pe_cisterna', materialName: 'Polietileno Cisterna', weightKg: 24, percentage: 100 }
+      { layerName: 'Capa 1 (1ra Carga)', materialId: 'pe_cisterna', materialName: 'Polietileno Cisterna', weightKg: 12, percentage: 50 },
+      { layerName: 'Capa 2 (2da Carga)', materialId: 'pe_cisterna', materialName: 'Polietileno Cisterna', weightKg: 12, percentage: 50 }
     ],
     image: 'assets/img/modelos/cisterna_generic.svg',
     isPending: true,
-    notes: '⚠️ Cantidad pendiente por confirmar en planta (estimado 24 kg).'
+    notes: '⚠️ Cantidad estimada: 2 capas de 12 kg (24 kg total).'
   },
   {
     id: 'cisterna-3000',
-    name: 'Cisterna 3000 L',
+    name: 'Cisterna 3000 L (Bicapa Reforzada)',
     capacity: 3000,
     group: PRODUCT_GROUPS.CISTERNA,
-    categoryLabel: 'Cisterna',
+    categoryLabel: 'Cisterna Bicapa',
     totalWeightKg: 50,
     layers: [
-      { layerName: 'Cuerpo Completo', materialId: 'pe_cisterna', materialName: 'Polietileno Cisterna', weightKg: 50, percentage: 100 }
+      { layerName: 'Capa 1 (1ra Carga)', materialId: 'pe_cisterna', materialName: 'Polietileno Cisterna', weightKg: 25, percentage: 50 },
+      { layerName: 'Capa 2 (2da Carga)', materialId: 'pe_cisterna', materialName: 'Polietileno Cisterna', weightKg: 25, percentage: 50 }
     ],
     image: 'assets/img/modelos/cisterna_generic.svg',
     isPending: false,
-    notes: 'Cisterna de gran capacidad 3000L (50 kg puro polietileno).'
+    notes: 'Cisterna 3000L en 2 capas de 25 kg de polietileno cada una (50 kg total).'
   },
   {
     id: 'cisterna-5500',
-    name: 'Cisterna 5500 L',
+    name: 'Cisterna 5500 L (4 Capas Industrial)',
     capacity: 5500,
     group: PRODUCT_GROUPS.CISTERNA,
-    categoryLabel: 'Cisterna',
+    categoryLabel: 'Cisterna 4 Capas',
     totalWeightKg: 100,
     layers: [
-      { layerName: 'Cuerpo Completo', materialId: 'pe_cisterna', materialName: 'Polietileno Cisterna', weightKg: 100, percentage: 100 }
+      { layerName: 'Capa 1 (1ra Carga)', materialId: 'pe_cisterna', materialName: 'Polietileno Cisterna', weightKg: 25, percentage: 25 },
+      { layerName: 'Capa 2 (2da Carga)', materialId: 'pe_cisterna', materialName: 'Polietileno Cisterna', weightKg: 25, percentage: 25 },
+      { layerName: 'Capa 3 (3ra Carga)', materialId: 'pe_cisterna', materialName: 'Polietileno Cisterna', weightKg: 25, percentage: 25 },
+      { layerName: 'Capa 4 (4ta Carga)', materialId: 'pe_cisterna', materialName: 'Polietileno Cisterna', weightKg: 25, percentage: 25 }
     ],
     image: 'assets/img/modelos/cisterna_generic.svg',
     isPending: false,
-    notes: 'Cisterna industrial máxima capacidad 5500L (100 kg puro polietileno).'
+    notes: 'Cisterna industrial máxima capacidad 5500L en 4 capas de 25 kg cada una (100 kg total).'
   },
   {
     id: 'tambo-especial',
     name: 'Tambo Estándar 200 L',
     capacity: 200,
     group: PRODUCT_GROUPS.CISTERNA,
-    categoryLabel: 'Tambo Especial',
+    categoryLabel: 'Tambo Monocapa',
     totalWeightKg: 6,
     layers: [
       { layerName: 'Cuerpo Monomaterial', materialId: 'pe_cisterna', materialName: 'Polietileno Estándar', weightKg: 6, percentage: 100 }

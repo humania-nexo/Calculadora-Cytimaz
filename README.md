@@ -20,8 +20,10 @@ Los proveedores entregan la resina en **sacos de 24 kilos**. La aplicación perm
 
 ## 🏗️ Reglas de Composición y Capas (Rotomoldeo)
 
-1. **🔵 Cisternas y Tambos (100% Puro Polietileno):**
-   - Monomaterial / homogéneo. El peso total del producto se computa en Polietileno Cisterna.
+1. **🔵 Cisternas y Tambos (Puro Polietileno en Cargas Múltiples):**
+   - **Cisternas Estándar (1100L, 1300L, 3000L):** Se fabrican en **2 capas (Bicapa 50/50)** del mismo material (ej. 1100L = 9 kg Capa 1 + 9 kg Capa 2).
+   - **Cisterna Industrial 5500L:** Se fabrica en **4 capas (25% cada una)** de 25 kg por carga (100 kg total de Polietileno Cisterna).
+   - **Tambo 200L:** Monocapa (6 kg de Polietileno).
 2. **🟢 Tinacos Bicapa (50% PE + 50% Espumado):**
    - **50% Capa Exterior:** Polietileno Arena / Claro.
    - **50% Capa Interior:** Polietileno Espumado (aislante térmico y rigidez).
