@@ -161,36 +161,57 @@ const ModMpPt = {
 
           <h3 class="mt-5 mb-2">2. Ingresa el Stock Disponible</h3>
           <p class="text-xs text-muted mb-3">
-            ${this.inputUnit === 'bags' ? `Ingresa la cantidad de sacos de ${bagKg} kg:` : 'Ingresa la cantidad de kilogramos:'}
+            ${this.inputUnit === 'bags' ? `Ingresa la cantidad de sacos de ${bagKg} kg disponibles:` : 'Ingresa la cantidad de kilogramos disponibles:'}
           </p>
 
           <div class="stock-inputs-list">
-            ${product.layers.map(layer => {
-              const val = this.inputs[layer.materialId] || 0;
-              const unitLabel = this.inputUnit === 'bags' ? `sacos (${bagKg}kg)` : 'kg';
-              return `
-                <div class="stock-input-row">
-                  <div class="stock-label">
-                    <span class="mat-dot-indicator ${layer.materialId}"></span>
-                    <div>
-                      <strong>${layer.materialName}</strong>
-                      <div class="text-xs text-muted">${layer.layerName} (requiere ${layer.weightKg} kg/pz)</div>
+            ${(() => {
+              // Extraer materiales únicos para no duplicar barras en modelos multicarga del mismo material
+              const uniqueMatsMap = {};
+              const uniqueMatsList = [];
+              product.layers.forEach(l => {
+                if (!uniqueMatsMap[l.materialId]) {
+                  uniqueMatsMap[l.materialId] = {
+                    materialId: l.materialId,
+                    materialName: l.materialName,
+                    totalWeightKg: 0,
+                    chargesCount: 0
+                  };
+                  uniqueMatsList.push(uniqueMatsMap[l.materialId]);
+                }
+                uniqueMatsMap[l.materialId].totalWeightKg += l.weightKg;
+                uniqueMatsMap[l.materialId].chargesCount += 1;
+              });
+
+              return uniqueMatsList.map(mat => {
+                const val = this.inputs[mat.materialId] !== undefined ? this.inputs[mat.materialId] : (this.inputUnit === 'bags' ? 10 : 240);
+                const unitLabel = this.inputUnit === 'bags' ? `sacos (${bagKg}kg)` : 'kg';
+                const chargesLabel = mat.chargesCount > 1 ? `(${mat.chargesCount} cargas de moldeo • Total: ${mat.totalWeightKg} kg/pz)` : `(Requiere ${mat.totalWeightKg} kg/pz)`;
+
+                return `
+                  <div class="stock-input-row">
+                    <div class="stock-label">
+                      <span class="mat-dot-indicator ${mat.materialId}"></span>
+                      <div>
+                        <strong>${mat.materialName}</strong>
+                        <div class="text-xs text-muted">${chargesLabel}</div>
+                      </div>
+                    </div>
+                    <div class="stock-control">
+                      <button type="button" class="btn-qty" onclick="ModMpPt.stepInput('${mat.materialId}', -5)">-5</button>
+                      <button type="button" class="btn-qty" onclick="ModMpPt.stepInput('${mat.materialId}', -1)">-1</button>
+                      <input type="number" min="0" step="${this.inputUnit === 'bags' ? '1' : '5'}" 
+                        class="form-control stock-field" value="${val}"
+                        oninput="ModMpPt.updateInput('${mat.materialId}', this.value)"
+                        onchange="ModMpPt.updateInput('${mat.materialId}', this.value)">
+                      <button type="button" class="btn-qty" onclick="ModMpPt.stepInput('${mat.materialId}', 1)">+1</button>
+                      <button type="button" class="btn-qty" onclick="ModMpPt.stepInput('${mat.materialId}', 5)">+5</button>
+                      <span class="stock-unit">${unitLabel}</span>
                     </div>
                   </div>
-                  <div class="stock-control">
-                    <button type="button" class="btn-qty" onclick="ModMpPt.stepInput('${layer.materialId}', -5)">-5</button>
-                    <button type="button" class="btn-qty" onclick="ModMpPt.stepInput('${layer.materialId}', -1)">-1</button>
-                    <input type="number" min="0" step="${this.inputUnit === 'bags' ? '1' : '5'}" 
-                      class="form-control stock-field" value="${val}"
-                      oninput="ModMpPt.updateInput('${layer.materialId}', this.value)"
-                      onchange="ModMpPt.updateInput('${layer.materialId}', this.value)">
-                    <button type="button" class="btn-qty" onclick="ModMpPt.stepInput('${layer.materialId}', 1)">+1</button>
-                    <button type="button" class="btn-qty" onclick="ModMpPt.stepInput('${layer.materialId}', 5)">+5</button>
-                    <span class="stock-unit">${unitLabel}</span>
-                  </div>
-                </div>
-              `;
-            }).join('')}
+                `;
+              }).join('');
+            })()}
           </div>
         </div>
 

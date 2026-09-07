@@ -150,6 +150,7 @@ const CalculationEngine = {
   /**
    * MÓDULO 2: Calcula cuántas unidades de un producto se pueden fabricar
    * a partir de stock ingresado en Kilos o en Sacos de 24 kg.
+   * Agrupa por TIPO DE MATERIAL ÚNICO (ej. Cisternas y Tambos = 1 solo campo de stock).
    * 
    * @param {string} productId ID del modelo a fabricar
    * @param {object} rawInputs { pe_arena, pe_negro, pe_espumado, pe_cisterna } (Valores ingresados)
@@ -169,35 +170,53 @@ const CalculationEngine = {
       availableStockKg[key] = inputUnit === 'bags' ? val * bagSize : val;
     }
 
+    // Agrupar capas por material único para no duplicar barras de insumo
+    const uniqueMaterialsMap = {};
+    const uniqueMaterialsList = [];
+
+    product.layers.forEach(layer => {
+      if (!uniqueMaterialsMap[layer.materialId]) {
+        uniqueMaterialsMap[layer.materialId] = {
+          materialId: layer.materialId,
+          materialName: layer.materialName,
+          totalReqPerUnitKg: 0,
+          layersDescription: []
+        };
+        uniqueMaterialsList.push(uniqueMaterialsMap[layer.materialId]);
+      }
+      uniqueMaterialsMap[layer.materialId].totalReqPerUnitKg += layer.weightKg;
+      uniqueMaterialsMap[layer.materialId].layersDescription.push(`${layer.layerName} (${layer.weightKg} kg)`);
+    });
+
     let maxPossibleUnits = Infinity;
     let limitingMaterial = null;
     const materialAnalysis = [];
 
-    product.layers.forEach(layer => {
-      const stockKg = availableStockKg[layer.materialId] || 0;
-      const reqPerUnitKg = layer.weightKg;
+    uniqueMaterialsList.forEach(mat => {
+      const stockKg = availableStockKg[mat.materialId] || 0;
+      const reqPerUnitKg = mat.totalReqPerUnitKg;
 
-      const unitsForThisLayer = reqPerUnitKg > 0 ? Math.floor(stockKg / reqPerUnitKg) : Infinity;
+      const unitsForThisMaterial = reqPerUnitKg > 0 ? Math.floor(stockKg / reqPerUnitKg) : Infinity;
 
-      if (unitsForThisLayer < maxPossibleUnits) {
-        maxPossibleUnits = unitsForThisLayer;
+      if (unitsForThisMaterial < maxPossibleUnits) {
+        maxPossibleUnits = unitsForThisMaterial;
         limitingMaterial = {
-          materialId: layer.materialId,
-          materialName: layer.materialName,
+          materialId: mat.materialId,
+          materialName: mat.materialName,
           stockKg,
           reqPerUnitKg,
-          unitsPossible: unitsForThisLayer
+          unitsPossible: unitsForThisMaterial
         };
       }
 
       materialAnalysis.push({
-        layerName: layer.layerName,
-        materialId: layer.materialId,
-        materialName: layer.materialName,
+        materialId: mat.materialId,
+        materialName: mat.materialName,
+        layersText: mat.layersDescription.join(' + '),
         stockAvailableKg: stockKg,
         stockAvailableBags: this.kgToBags(stockKg, bagSize),
         reqPerUnitKg: reqPerUnitKg,
-        possibleUnits: unitsForThisLayer
+        possibleUnits: unitsForThisMaterial
       });
     });
 
@@ -213,6 +232,7 @@ const CalculationEngine = {
       leftovers.push({
         materialId: item.materialId,
         materialName: item.materialName,
+        layersText: item.layersText,
         usedKg,
         usedBags: this.kgToBags(usedKg, bagSize),
         leftoverKg,
@@ -228,6 +248,7 @@ const CalculationEngine = {
       bagSizeKg: bagSize,
       maxPossibleUnits,
       limitingMaterial,
+      uniqueMaterialsList,
       materialAnalysis,
       leftovers,
       totalProducedKg: parseFloat((maxPossibleUnits * product.totalWeightKg).toFixed(2)),
