@@ -23,7 +23,7 @@ Los proveedores entregan la resina en **sacos de 24 kilos**. La aplicación perm
 1. **🔵 Cisternas y Tambos (Puro Polietileno en Cargas Múltiples):**
    - **Cisternas Estándar (1100L, 1300L, 3000L):** Se fabrican en **2 capas (Bicapa 50/50)** del mismo material (ej. 1100L = 9 kg Capa 1 + 9 kg Capa 2).
    - **Cisterna Industrial 5500L:** Se fabrica en **4 capas (25% cada una)** de 25 kg por carga (100 kg total de Polietileno Cisterna).
-   - **Tambo 200L:** Monocapa (6 kg de Polietileno).
+   - **Tambo 200L (3 Cargas):** Se fabrica en **3 cargas de polietileno** (2.5 kg + 2.5 kg + 1.0 kg de refuerzo final = 6 kg total).
 2. **🟢 Tinacos Bicapa (50% PE + 50% Espumado):**
    - **50% Capa Exterior:** Polietileno Arena / Claro.
    - **50% Capa Interior:** Polietileno Espumado (aislante térmico y rigidez).

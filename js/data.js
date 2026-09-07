@@ -306,17 +306,19 @@ const INITIAL_PRODUCTS = [
   },
   {
     id: 'tambo-especial',
-    name: 'Tambo Estándar 200 L',
+    name: 'Tambo Estándar 200 L (3 Cargas)',
     capacity: 200,
     group: PRODUCT_GROUPS.CISTERNA,
-    categoryLabel: 'Tambo Monocapa',
+    categoryLabel: 'Tambo 3 Cargas',
     totalWeightKg: 6,
     layers: [
-      { layerName: 'Cuerpo Monomaterial', materialId: 'pe_cisterna', materialName: 'Polietileno Estándar', weightKg: 6, percentage: 100 }
+      { layerName: 'Capa 1 (1ra Carga)', materialId: 'pe_cisterna', materialName: 'Polietileno Estándar', weightKg: 2.5, percentage: 41.67 },
+      { layerName: 'Capa 2 (2da Carga)', materialId: 'pe_cisterna', materialName: 'Polietileno Estándar', weightKg: 2.5, percentage: 41.67 },
+      { layerName: 'Capa 3 (Refuerzo Final)', materialId: 'pe_cisterna', materialName: 'Polietileno Estándar', weightKg: 1.0, percentage: 16.66 }
     ],
     image: 'assets/img/modelos/tambo_generic.svg',
     isPending: false,
-    notes: 'Tambo monomaterial (6 kg polietileno).'
+    notes: 'Tambo de 6 kg fabricado en 3 cargas de polietileno: 2.5 kg + 2.5 kg + 1 kg de refuerzo final.'
   }
 ];
 
