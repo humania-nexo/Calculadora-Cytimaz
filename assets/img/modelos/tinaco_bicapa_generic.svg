@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" width="100%" height="100%">
+  <defs>
+    <linearGradient id="peSand" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#CBB18B"/>
+      <stop offset="50%" stop-color="#E5D1B5"/>
+      <stop offset="100%" stop-color="#B89B73"/>
+    </linearGradient>
+    <linearGradient id="peFoam" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#E2E8F0"/>
+      <stop offset="100%" stop-color="#CBD5E1"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-opacity="0.15"/>
+    </filter>
+  </defs>
+  <!-- Background subtle circle -->
+  <circle cx="150" cy="150" r="130" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="2"/>
+  
+  <!-- TANK BODY (Bicapa: Exterior Arena + Interior Espumado) -->
+  <g filter="url(#shadow)">
+    <!-- Main Tank Outer Body (Sand Color) -->
+    <path d="M 90 90 Q 150 75 210 90 L 220 220 Q 150 235 80 220 Z" fill="url(#peSand)" stroke="#9A7B56" stroke-width="2"/>
+    
+    <!-- Ribs / Anillos de refuerzo -->
+    <path d="M 88 125 Q 150 115 212 125" fill="none" stroke="#A88B67" stroke-width="3"/>
+    <path d="M 85 160 Q 150 150 215 160" fill="none" stroke="#A88B67" stroke-width="3"/>
+    <path d="M 83 195 Q 150 185 217 195" fill="none" stroke="#A88B67" stroke-width="3"/>
+
+    <!-- Cutout showing inner foam layer (Bicapa) -->
+    <path d="M 120 110 Q 150 100 180 110 L 175 200 Q 150 208 125 200 Z" fill="url(#peFoam)" stroke="#94A3B8" stroke-width="1.5"/>
+
+    <!-- Lid / Tapa -->
+    <ellipse cx="150" cy="85" rx="45" ry="12" fill="#2B2B2B" stroke="#18181B" stroke-width="2"/>
+    <ellipse cx="150" cy="82" rx="20" ry="5" fill="#404040"/>
+  </g>
+
+  <!-- Labels -->
+  <text x="150" y="260" text-anchor="middle" font-family="sans-serif" font-size="13" font-weight="bold" fill="#0F172A">TINACO BICAPA</text>
+  <text x="150" y="278" text-anchor="middle" font-family="sans-serif" font-size="10" fill="#64748B">50% Arena • 50% Espumado</text>
+</svg>
