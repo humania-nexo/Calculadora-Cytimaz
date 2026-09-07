@@ -155,48 +155,55 @@ const ModPtMp = {
     list.innerHTML = this.orderRows.map((row, index) => {
       return `
         <div class="order-row-item" data-id="${row.id}">
-          <span class="item-index">${index + 1}</span>
-          
-          <div class="select-wrapper">
-            <select class="form-control select-product" onchange="ModPtMp.updateRow('${row.id}', 'productId', this.value)">
-              <optgroup label="🔵 Cisternas y Tambos (100% Polietileno)">
-                ${PRODUCTS_DATA.filter(p => p.group === PRODUCT_GROUPS.CISTERNA).map(p => `
-                  <option value="${p.id}" ${p.id === row.productId ? 'selected' : ''}>
-                    ${p.name} — ${p.totalWeightKg} kg PE
-                  </option>
-                `).join('')}
-              </optgroup>
-              <optgroup label="🟢 Tinacos Bicapa (50% PE / 50% Espumado)">
-                ${PRODUCTS_DATA.filter(p => p.group === PRODUCT_GROUPS.TINACO_BICAPA).map(p => `
-                  <option value="${p.id}" ${p.id === row.productId ? 'selected' : ''}>
-                    ${p.name} — ${p.totalWeightKg} kg (50/50)
-                  </option>
-                `).join('')}
-              </optgroup>
-              <optgroup label="🟠 Tinacos Tricapa (1/3 Arena + 1/3 Negro UV + 1/3 Espumado)">
-                ${PRODUCTS_DATA.filter(p => p.group === PRODUCT_GROUPS.TINACO_TRICAPA).map(p => `
-                  <option value="${p.id}" ${p.id === row.productId ? 'selected' : ''}>
-                    ${p.name} — ${p.totalWeightKg} kg (3 Capas)
-                  </option>
-                `).join('')}
-              </optgroup>
-            </select>
+          <!-- Fila Superior: Número, Selector de Modelo a pantalla completa y botón de eliminar -->
+          <div class="row-item-top">
+            <span class="item-index-badge">#${index + 1}</span>
+            
+            <div class="select-wrapper">
+              <select class="form-control select-product" onchange="ModPtMp.updateRow('${row.id}', 'productId', this.value)">
+                <optgroup label="🔵 Cisternas y Tambos (Puro Polietileno)">
+                  ${PRODUCTS_DATA.filter(p => p.group === PRODUCT_GROUPS.CISTERNA).map(p => `
+                    <option value="${p.id}" ${p.id === row.productId ? 'selected' : ''}>
+                      ${p.name} — ${p.totalWeightKg} kg PE
+                    </option>
+                  `).join('')}
+                </optgroup>
+                <optgroup label="🟢 Tinacos Bicapa (50% PE / 50% Espumado)">
+                  ${PRODUCTS_DATA.filter(p => p.group === PRODUCT_GROUPS.TINACO_BICAPA).map(p => `
+                    <option value="${p.id}" ${p.id === row.productId ? 'selected' : ''}>
+                      ${p.name} — ${p.totalWeightKg} kg (50/50)
+                    </option>
+                  `).join('')}
+                </optgroup>
+                <optgroup label="🟠 Tinacos Tricapa (1/3 Arena + 1/3 Negro UV + 1/3 Espumado)">
+                  ${PRODUCTS_DATA.filter(p => p.group === PRODUCT_GROUPS.TINACO_TRICAPA).map(p => `
+                    <option value="${p.id}" ${p.id === row.productId ? 'selected' : ''}>
+                      ${p.name} — ${p.totalWeightKg} kg (3 Capas)
+                    </option>
+                  `).join('')}
+                </optgroup>
+              </select>
+            </div>
+
+            <button class="btn-delete-row" title="Quitar este modelo" onclick="ModPtMp.removeRow('${row.id}')">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+            </button>
           </div>
 
-          <div class="quantity-input-group">
-            <button type="button" class="btn-qty" onclick="ModPtMp.stepQty('${row.id}', -5)">-5</button>
-            <button type="button" class="btn-qty" onclick="ModPtMp.stepQty('${row.id}', -1)">-</button>
-            <input type="number" min="1" max="5000" class="form-control input-qty" value="${row.quantity}" 
-              onchange="ModPtMp.updateRow('${row.id}', 'quantity', this.value)"
-              oninput="ModPtMp.updateRow('${row.id}', 'quantity', this.value)">
-            <button type="button" class="btn-qty" onclick="ModPtMp.stepQty('${row.id}', 1)">+</button>
-            <button type="button" class="btn-qty" onclick="ModPtMp.stepQty('${row.id}', 5)">+5</button>
-            <span class="unit-text">pzs</span>
+          <!-- Fila Inferior: Control de Cantidad grande y táctil -->
+          <div class="row-item-bottom">
+            <span class="qty-label-text">Cantidad:</span>
+            <div class="quantity-input-group">
+              <button type="button" class="btn-qty btn-qty-step" onclick="ModPtMp.stepQty('${row.id}', -5)">-5</button>
+              <button type="button" class="btn-qty" onclick="ModPtMp.stepQty('${row.id}', -1)">-</button>
+              <input type="number" min="1" max="5000" class="form-control input-qty" value="${row.quantity}" 
+                onchange="ModPtMp.updateRow('${row.id}', 'quantity', this.value)"
+                oninput="ModPtMp.updateRow('${row.id}', 'quantity', this.value)">
+              <button type="button" class="btn-qty" onclick="ModPtMp.stepQty('${row.id}', 1)">+</button>
+              <button type="button" class="btn-qty btn-qty-step" onclick="ModPtMp.stepQty('${row.id}', 5)">+5</button>
+              <span class="unit-text">piezas</span>
+            </div>
           </div>
-
-          <button class="btn-icon btn-danger-icon" title="Quitar modelo" onclick="ModPtMp.removeRow('${row.id}')">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"></path></svg>
-          </button>
         </div>
       `;
     }).join('');
